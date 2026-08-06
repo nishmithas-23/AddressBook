@@ -7,28 +7,53 @@
 
 void listContacts(AddressBook *addressBook) 
 {
-    // Sort contacts based on the chosen criteria
+    // Bubble sort based on name
 
-    // Bubble sort
+    for (int i = 0; i < addressBook->contactCount - 1; i++)
+    {
+        for (int j = 0; j < addressBook->contactCount - 1 - i; j++)
+        {
+            if (strcmp(addressBook->contacts[j].name,
+                       addressBook->contacts[j + 1].name) > 0)
+            {
+                Contact temp;
 
-    Loop from 0 to addressBook->contactCount-1;
+                temp = addressBook->contacts[j];
+                addressBook->contacts[j] = addressBook->contacts[j + 1];
+                addressBook->contacts[j + 1] = temp;
+            }
+        }
+    }
 
-     pf("%s, %s, %s\n", addressBook->contacts[i].name,addressBook->contacts[i].phone,addressBook->contacts[i].email);
+    // Print contacts
+
+    printf("----------------------------------------------------------------------\n");
+    printf("| %-20s | %-15s | %-25s |\n",
+           "Name", "Phone Number", "Email");
+    printf("----------------------------------------------------------------------\n");
+
+    for (int i = 0; i < addressBook->contactCount; i++)
+    {
+        printf("| %-20s | %-15s | %-35s|\n",
+               addressBook->contacts[i].name,
+               addressBook->contacts[i].phone,
+               addressBook->contacts[i].email);
+    }
+
+    printf("----------------------------------------------------------------------\n");
+}
+// void initialize(AddressBook *addressBook) {
+//     addressBook->contactCount = 0;
+//     populateAddressBook(addressBook);
     
-}
+//     // Load contacts from file during initialization (After files)
+//     //loadContactsFromFile(addressBook);
+// }
 
-void initialize(AddressBook *addressBook) {
-    addressBook->contactCount = 0;
-    populateAddressBook(addressBook);
-    
-    // Load contacts from file during initialization (After files)
-    //loadContactsFromFile(addressBook);
-}
-
-void saveAndExit(AddressBook *addressBook) {
-    saveContactsToFile(addressBook); // Save contacts to file
-    exit(EXIT_SUCCESS); // Exit the program
-}
+// void saveAndExit(AddressBook *addressBook) {
+//     saveContactsToFile(addressBook); // Save contacts to file
+//     exit(EXIT_SUCCESS); // Exit the program
+// }
 
 
 void createContact(AddressBook *addressBook) // insted struct Addressbook (datatype)*addresbook due to typedef just addressbook
@@ -106,39 +131,39 @@ void createContact(AddressBook *addressBook) // insted struct Addressbook (datat
 }
 
 
-void searchContact(AddressBook *addressBook) 
-{
-    /* Define the logic for search */
+// void searchContact(AddressBook *addressBook) 
+// {
+//     /* Define the logic for search */
 
-    int choise;
+//     int choise;
 
-    // print promt
+//     // print promt
 
-    scanF("%d", &choise);
+//     scanF("%d", &choise);
 
-    switch(choise)
-    {
-        case 1:
-            search_by_name(addressBook);
-            break;
-        case 2:
-            search_by_phone(addressBook);
-            break;
-    }
+//     switch(choise)
+//     {
+//         case 1:
+//             search_by_name(addressBook);
+//             break;
+//         case 2:
+//             search_by_phone(addressBook);
+//             break;
+//     }
 
-}
+// }
 
-void editContact(AddressBook *addressBook)
-{
-	/* Define the logic for Editcontact */
+// void editContact(AddressBook *addressBook)
+// {
+// 	/* Define the logic for Editcontact */
     
-}
+// }
 
-void deleteContact(AddressBook *addressBook)
-{
-	/* Define the logic for deletecontact */
+// void deleteContact(AddressBook *addressBook)
+// {
+// 	/* Define the logic for deletecontact */
    
-}
+// }
 
 
 int validate_name(char *str)
@@ -274,38 +299,38 @@ int isEmailUnique(AddressBook *addressBook, char *email)
     return 1;
 }
  
-int search_by_name(AddressBook *addressBook)
-{
-    char str[30];
+// int search_by_name(AddressBook *addressBook)
+// {
+//     char str[30];
 
-    //Get the name
+//     //Get the name
 
-    Loop from 0 to cc-1
-        if (str == addressBook->contacts[i].name)
-        {
-            print the contact
-            count++;
-            // return i;
-        }
+//     Loop from 0 to cc-1
+//         if (str == addressBook->contacts[i].name)
+//         {
+//             print the contact
+//             count++;
+//             // return i;
+//         }
 
-    count ==> 0 ==> return -1;
-    count ==> more then 1 ==> return search_by_phone(addressBook);
-    count ==> 1 ==> return matching index
-}
+//     count ==> 0 ==> return -1;
+//     count ==> more then 1 ==> return search_by_phone(addressBook);
+//     count ==> 1 ==> return matching index
+// }
 
 
-int search_by_phone(AddressBook * addressBook)
-{
-    char str[11];
+// int search_by_phone(AddressBook * addressBook)
+// {
+//     char str[11];
 
-    //Get the phone number 
+//     //Get the phone number 
 
-    Loop from 0 to cc-1
-        if (str == addressBook->contacts[i].phone)
-        {
-            print the contact
-            return i;
-        }
+//     Loop from 0 to cc-1
+//         if (str == addressBook->contacts[i].phone)
+//         {
+//             print the contact
+//             return i;
+//         }
 
-    return -1;
-}
+//     return -1;
+// }
