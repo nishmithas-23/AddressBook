@@ -18,9 +18,10 @@ typedef struct {
 void createContact(AddressBook *addressBook);
 void searchContact(AddressBook *addressBook);
 void editContact(AddressBook *addressBook);
+
 void deleteContact(AddressBook   *addressBook);
 void listContacts(AddressBook *addressBook);
-void initialize(AddressBook *addressBook);
+ 
 void saveContactsToFile(AddressBook *AddressBook);
 
 int validate_name(char *str);
@@ -30,5 +31,13 @@ int validate_email(char *str);
 int isPhoneUnique(AddressBook *addressBook, char *phone);
 int isEmailUnique(AddressBook *addressBook, char *email);
 
+void loadContactsFromFile(AddressBook *addressBook);
+ 
+
+int search_by_phone(AddressBook *addressBook);
+int search_by_email(AddressBook *addressBook);
+int search_by_name(AddressBook *addressBook);
+
+ 
  
 #endif
