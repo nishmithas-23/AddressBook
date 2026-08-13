@@ -1,4 +1,11 @@
-#include <stdio.h>
+/*
+Nishmitha S  
+Date :-31/7/2026
+Time : From 8.30pm 
+Description Added functions to  Creating a contact and started on do other operations...
+*/
+
+#include<stdio.h>
 #include "contact.h"
 
 
@@ -11,6 +18,7 @@ int main()
     addressBook.contactCount = 0;
 
     loadContactsFromFile(&addressBook);
+    printf("Total number of contacts: %d\n", addressBook.contactCount);
     do 
     {
         printf("\nAddress Book Menu:\n");
@@ -22,8 +30,17 @@ int main()
     	printf("6. Save and Exit\n");		
         printf("7. Exit\n");
         printf("Please, Enter your choice: ");
-        scanf("%d", &choice);
         
+        if (scanf("%d", &choice) != 1)
+{
+    printf("Invalid choice. Please enter a number.\n");
+
+    while (getchar() != '\n')
+    {
+    }
+
+    continue;
+}
         switch (choice) 
         {
             case 1:
@@ -45,6 +62,9 @@ int main()
             saveContactsToFile(&addressBook);
             printf("Saving and Exiting...\n");
             break;
+            
+            case 7:
+            return 0;
 
             default:
                 printf("Invalid choice. Please try again.\n");

@@ -40,12 +40,13 @@ for (int i = 0; i < addressBook->contactCount; i++)
 }
 
 printf("------------------------------------------------------------------------- \n");
+printf("Total number of contacts: %d\n", addressBook->contactCount);
 }
  
 
 void createContact(AddressBook *addressBook) // insted struct Addressbook (datatype)*addresbook due to typedef just addressbook
 {
-	/* Define the logic to create a Contacts */
+	/* Defining the logic to create a Contacts */
 
     char name[30], phone[11], email[50];
     int res;
@@ -116,6 +117,139 @@ void createContact(AddressBook *addressBook) // insted struct Addressbook (datat
     addressBook->contactCount++;
 
     printf("Contact created successfully!\n");
+}
+
+int validate_name(char *str)
+{
+    int i = 0;
+
+    while (str[i] == ' ')
+    {
+        i++;
+    }
+
+    if (str[i] == '\0')
+    {
+        printf("Invalid name. Please enter a valid name.\n");
+        return 0;
+    }
+
+    for (; str[i] != '\0'; i++)
+    {
+        if (!((str[i] >= 'A' && str[i] <= 'Z') ||
+              (str[i] >= 'a' && str[i] <= 'z') ||
+              str[i] == ' ' ||
+              str[i] == '.'))
+        {
+            printf("Invalid name. Use only alphabets, spaces and '.'\n");
+            return 0;
+        }
+    }
+
+    return 1;
+}int validate_phone(char *str)
+{
+    int i;
+
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        if (str[i] < '0' || str[i] > '9')
+        {
+            printf("Invalid phone number. Enter only digits.\n");
+            return 0;
+        }
+    }
+
+    if (i != 10)
+    {
+        printf("Invalid phone number. Enter exactly 10 digits.\n");
+        return 0;
+    }
+
+    return 1;
+}
+int isPhoneUnique(AddressBook *addressBook, char *phone)
+{
+    int i;
+
+    for (i = 0; i < addressBook->contactCount; i++)
+    {
+        if (strcmp(addressBook->contacts[i].phone, phone) == 0)
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+ int validate_email(char *str)
+{
+    int i;
+    int at = 0;
+    int len;
+
+    // First character must be lowercase
+    if (!(str[0] >= 'a' && str[0] <= 'z'))
+    {
+        printf("Invalid email: first character must be lowercase\n");
+        return 0;
+    }
+
+    // Check characters and count @
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        if (str[i] == ' ')
+        {
+            printf("Invalid email: spaces are not allowed\n");
+            return 0;
+        }
+
+        if (str[i] == '@')
+        {
+            at++;
+        }
+    }
+
+    // Exactly one @
+    if (at != 1)
+    {
+        printf("Invalid email\n");
+        return 0;
+    }
+
+    // Check .com at the end
+    len = strlen(str);
+
+    if (len < 5)
+    {
+        printf("Invalid email\n");
+        return 0;
+    }
+
+    if (str[len - 4] != '.' ||
+        str[len - 3] != 'c' ||
+        str[len - 2] != 'o' ||
+        str[len - 1] != 'm')
+    {
+        printf("Invalid email: email must end with .com\n");
+        return 0;
+    }
+
+    return 1;
+}
+int isEmailUnique(AddressBook *addressBook, char *email)
+{
+    int i;
+
+    for (i = 0; i < addressBook->contactCount; i++)
+    {
+        if (strcmp(addressBook->contacts[i].email, email) == 0)
+        {
+            return 0;
+        }
+    }
+
+    return 1;
 }
 void searchContact(AddressBook *addressBook)
 {
@@ -417,139 +551,7 @@ void editContact(AddressBook *addressBook)
 
     printf("Changes saved successfully.\n");
 }
-
-int validate_name(char *str)
-{
-    int i = 0;
-
-    while (str[i] == ' ')
-    {
-        i++;
-    }
-
-    if (str[i] == '\0')
-    {
-        printf("Invalid name. Please enter a valid name.\n");
-        return 0;
-    }
-
-    for (; str[i] != '\0'; i++)
-    {
-        if (!((str[i] >= 'A' && str[i] <= 'Z') ||
-              (str[i] >= 'a' && str[i] <= 'z') ||
-              str[i] == ' ' ||
-              str[i] == '.'))
-        {
-            printf("Invalid name. Use only alphabets, spaces and '.'\n");
-            return 0;
-        }
-    }
-
-    return 1;
-}int validate_phone(char *str)
-{
-    int i;
-
-    for (i = 0; str[i] != '\0'; i++)
-    {
-        if (str[i] < '0' || str[i] > '9')
-        {
-            printf("Invalid phone number. Enter only digits.\n");
-            return 0;
-        }
-    }
-
-    if (i != 10)
-    {
-        printf("Invalid phone number. Enter exactly 10 digits.\n");
-        return 0;
-    }
-
-    return 1;
-}
-int isPhoneUnique(AddressBook *addressBook, char *phone)
-{
-    int i;
-
-    for (i = 0; i < addressBook->contactCount; i++)
-    {
-        if (strcmp(addressBook->contacts[i].phone, phone) == 0)
-        {
-            return 0;
-        }
-    }
-
-    return 1;
-}
- int validate_email(char *str)
-{
-    int i;
-    int at = 0;
-    int len;
-
-    // First character must be lowercase
-    if (!(str[0] >= 'a' && str[0] <= 'z'))
-    {
-        printf("Invalid email: first character must be lowercase\n");
-        return 0;
-    }
-
-    // Check characters and count @
-    for (i = 0; str[i] != '\0'; i++)
-    {
-        if (str[i] == ' ')
-        {
-            printf("Invalid email: spaces are not allowed\n");
-            return 0;
-        }
-
-        if (str[i] == '@')
-        {
-            at++;
-        }
-    }
-
-    // Exactly one @
-    if (at != 1)
-    {
-        printf("Invalid email\n");
-        return 0;
-    }
-
-    // Check .com at the end
-    len = strlen(str);
-
-    if (len < 5)
-    {
-        printf("Invalid email\n");
-        return 0;
-    }
-
-    if (str[len - 4] != '.' ||
-        str[len - 3] != 'c' ||
-        str[len - 2] != 'o' ||
-        str[len - 1] != 'm')
-    {
-        printf("Invalid email: email must end with .com\n");
-        return 0;
-    }
-
-    return 1;
-}
-int isEmailUnique(AddressBook *addressBook, char *email)
-{
-    int i;
-
-    for (i = 0; i < addressBook->contactCount; i++)
-    {
-        if (strcmp(addressBook->contacts[i].email, email) == 0)
-        {
-            return 0;
-        }
-    }
-
-    return 1;
-}
+ 
  
 void deleteContact(AddressBook *addressBook)
 {

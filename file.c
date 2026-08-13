@@ -10,7 +10,7 @@ void saveContactsToFile(AddressBook *addressBook)
         printf("File opening failed\n");
         return;
     }
-
+    fprintf(fp, "%d\n", addressBook->contactCount);
     for (int i = 0; i < addressBook->contactCount; i++)
     {
         fprintf(fp, "%s,%s,%s\n",
@@ -21,8 +21,6 @@ void saveContactsToFile(AddressBook *addressBook)
 
     fclose(fp);
 }
-
-
 void loadContactsFromFile(AddressBook *addressBook)
 {
     FILE *fp = fopen("contacts.csv", "r");
@@ -33,13 +31,14 @@ void loadContactsFromFile(AddressBook *addressBook)
         return;
     }
 
-    while (addressBook->contactCount < MAX_CONTACTS &&
-           fscanf(fp, "%29[^,],%10[^,],%29[^\n]\n",
-                  addressBook->contacts[addressBook->contactCount].name,
-                  addressBook->contacts[addressBook->contactCount].phone,
-                  addressBook->contacts[addressBook->contactCount].email) == 3)
+    fscanf(fp, "%d\n", &addressBook->contactCount);
+
+    for (int i = 0; i < addressBook->contactCount; i++)
     {
-        addressBook->contactCount++;
+        fscanf(fp, "%29[^,],%10[^,],%29[^\n]\n",
+               addressBook->contacts[i].name,
+               addressBook->contacts[i].phone,
+               addressBook->contacts[i].email);
     }
 
     fclose(fp);
