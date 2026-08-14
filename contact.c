@@ -43,7 +43,7 @@ printf("------------------------------------------------------------------------
 printf("Total number of contacts: %d\n", addressBook->contactCount);
 }
  
-
+ 
 void createContact(AddressBook *addressBook) // insted struct Addressbook (datatype)*addresbook due to typedef just addressbook
 {
 	/* Defining the logic to create a Contacts */
@@ -254,41 +254,52 @@ int isEmailUnique(AddressBook *addressBook, char *email)
 void searchContact(AddressBook *addressBook)
 {
     int choice;
-
+while(1)
+{
     printf("\nSearch Contact\n");
     printf("1. Search by phone\n");
     printf("2. Search by email\n");
     printf("3. Search by name\n");
 
     printf("Enter your choice: ");
-    scanf("%d", &choice);
+     if (scanf("%d", &choice) != 1)
+    {
+        printf("Invalid choice. Please enter a number.\n");
+
+        while (getchar() != '\n')
+        {
+        }
+
+        continue;
+    }
+
 
     switch (choice)
     {
         case 1:
             search_by_phone(addressBook);
-            break;
+            return;
 
         case 2:
             search_by_email(addressBook);
-            break;
+            return;
 
         case 3:
             search_by_name(addressBook);
-            break;
+            return;
 
         default:
             printf("Invalid choice.\n");
     }
 }
 
-
+}
 int search_by_phone(AddressBook *addressBook)
 {
-    char phone[11];
+    char phone[50];
 
-    printf("Enter phone number: ");
-    scanf("%10s", phone);
+printf("Enter phone number: ");
+scanf(" %[^\n]", phone);
 
     for (int i = 0; i < addressBook->contactCount; i++)
     {
@@ -312,8 +323,8 @@ int search_by_email(AddressBook *addressBook)
 {
     char email[50];
 
-    printf("Enter email: ");
-    scanf("%29s", email);
+printf("Enter email: ");
+scanf(" %[^\n]", email);
 
     for (int i = 0; i < addressBook->contactCount; i++)
     {
@@ -382,30 +393,62 @@ int search_by_name(AddressBook *addressBook)
     }
 
     int choice;
+while (1){
+ 
+
 
     printf("\nEnter serial number to select contact: ");
-    scanf("%d", &choice);
+    
+if (scanf("%d", &choice) != 1)
+{
+    printf("Invalid serial number. Please enter a number.\n");
+
+    while (getchar() != '\n')
+    {
+    }
+
+   continue;
+}
 
     if (choice < 1 || choice > count)
     {
         printf("Invalid serial number.\n");
-        return -1;
+        continue;
     }
 
     return index[choice - 1];
-}
+}}
 void editContact(AddressBook *addressBook)
 {
     int choice;
     int index;
-
+while(1){
     printf("\nEdit Contact\n");
     printf("1. Search by phone\n");
     printf("2. Search by email\n");
     printf("3. Search by name\n");
+    printf("4. Cancel\n");
 
     printf("Enter your choice: ");
-    scanf("%d", &choice);
+    if (scanf("%d", &choice) != 1)
+    {
+        printf("Invalid choice. Please enter a number.\n");
+
+        while (getchar() != '\n')
+        {
+        }
+
+        continue;
+    }
+
+    if (choice < 1 || choice > 4)
+    {
+        printf("Invalid choice.\n");
+        continue;
+    }
+
+    break;
+}
 
     switch (choice)
     {
@@ -420,7 +463,11 @@ void editContact(AddressBook *addressBook)
         case 3:
             index = search_by_name(addressBook);
             break;
-
+        
+        case 4:
+        printf("Edit cancelled.\n");
+        return;
+          
         default:
             printf("Invalid choice.\n");
             return;
@@ -436,14 +483,33 @@ void editContact(AddressBook *addressBook)
     printf("Name  : %s\n", addressBook->contacts[index].name);
     printf("Phone : %s\n", addressBook->contacts[index].phone);
     printf("Email : %s\n", addressBook->contacts[index].email);
-
+while(1){
     printf("\nWhat do you want to edit?\n");
     printf("1. Name\n");
     printf("2. Phone\n");
     printf("3. Email\n");
+    printf("4. Cancel\n");
 
     printf("Enter your choice: ");
-    scanf("%d", &choice);
+   if (scanf("%d", &choice) != 1)
+    {
+        printf("Invalid choice. Please enter a number.\n");
+
+        while (getchar() != '\n')
+        {
+        }
+
+        continue;
+    }
+
+    if (choice < 1 || choice > 4)
+    {
+        printf("Invalid choice.\n");
+        continue;
+    }
+
+    break;
+}
 
     switch (choice)
     {
@@ -474,29 +540,29 @@ void editContact(AddressBook *addressBook)
 
         case 2:
         {
-            char phone[11];
             int res;
+           char phone[50];
 
             do
             {
-                printf("Enter new phone number: ");
-                scanf("%10s", phone);
+            printf("Enter new phone number: ");
+            scanf(" %[^\n]", phone);
 
-                res = validate_phone(phone);
+            res = validate_phone(phone);
 
-                if (res == 1)
+            if (res == 1)
+            {
+                if (isPhoneUnique(addressBook, phone) == 0)
                 {
-                    if (isPhoneUnique(addressBook, phone) == 0)
+                    if (strcmp(addressBook->contacts[index].phone, phone) != 0)
                     {
-                        if (strcmp(addressBook->contacts[index].phone, phone) != 0)
-                        {
-                            printf("Phone number already exists. Enter another number.\n");
-                            res = 0;
-                        }
-                    }
-                }
+                         printf("Phone number already exists. Enter another number.\n");
+                         res = 0;
+                     }
+        }
+    }
 
-            } while (res == 0);
+} while (res == 0);
 
             strcpy(addressBook->contacts[index].phone, phone);
 
@@ -508,14 +574,14 @@ void editContact(AddressBook *addressBook)
         /* ---------- EDIT EMAIL ---------- */
 
         case 3:
-        {
+             {
             char email[50];
             int res;
 
             do
             {
                 printf("Enter new email: ");
-                scanf("%29s", email);
+                scanf(" %[^\n]", email);
 
                 res = validate_email(email);
 
@@ -538,8 +604,10 @@ void editContact(AddressBook *addressBook)
             printf("Email updated successfully!\n");
             break;
         }
-
-
+           case 4:
+        printf("Edit cancelled.\n");
+        return;
+        
         default:
             printf("Invalid choice.\n");
             return;
