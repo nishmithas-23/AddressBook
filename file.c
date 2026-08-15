@@ -31,14 +31,32 @@ void loadContactsFromFile(AddressBook *addressBook)
         return;
     }
 
-    fscanf(fp, "%d\n", &addressBook->contactCount);
+    int count;
+    fscanf(fp, "%d\n", &count);
 
-    for (int i = 0; i < addressBook->contactCount; i++)
+    addressBook->contactCount = 0;
+
+    for (int i = 0; i < count; i++)
     {
-        fscanf(fp, "%29[^,],%10[^,],%29[^\n]\n",
-               addressBook->contacts[i].name,
-               addressBook->contacts[i].phone,
-               addressBook->contacts[i].email);
+        Contact temp;
+
+        if (fscanf(fp, "%29[^,],%10[^,],%29[^\n]\n",
+                   temp.name,
+                   temp.phone,
+                   temp.email) == 3)
+        {
+            if (validate_name(temp.name) &&
+                validate_phone(temp.phone) &&
+                validate_email(temp.email))
+                {   if (isPhoneUnique(addressBook, temp.phone) &&
+                        isEmailUnique(addressBook, temp.email))
+            {
+                addressBook->contacts[addressBook->contactCount] = temp;
+                addressBook->contactCount++;
+            }
+            
+        }
+        }
     }
 
     fclose(fp);
